@@ -6,12 +6,10 @@ by Sorint https://sorint.it
 License GPLv3
 """
 
-import logging
-
 import requests
 from requests.compat import urljoin
 
-__version__ = '1.0'
+__version__ = '1.1'
 
 DEFAULT_PAGE_LIMIT = '20'
 DEFAULT_API_VERSION = '3.0'

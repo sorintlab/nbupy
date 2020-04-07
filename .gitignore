@@ -1,1 +1,5 @@
 .idea
+build
+dist
+nbupy.egg-info
+*.pyc

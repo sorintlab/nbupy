@@ -4,9 +4,9 @@ Module to use the API of Veritas Netbackup.
 
 ## Supported versions
 
-+ v1.0
-  - api version 3.0
-    + NBU version 8.2
++ v1.0, v1.1
+    - api version 3.0
+        + NBU version 8.2
 
 ## API
 
