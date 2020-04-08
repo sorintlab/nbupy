@@ -105,6 +105,31 @@ class NbuApiConnector:
                 headers=h
             )
 
+    def _delete_api_call(self, uri, headers=None, parameters=None):
+        """ hide _perform_request to the simple DELETE api calls """
+        h = {
+            'content-type': 'application/vnd.netbackup+json;version={}'.format(self._version),
+            'Authorization': '{}'.format(self._token)
+        }
+        if headers:
+            for header, value in headers.items():
+                h[header] = value
+        if parameters:
+            return self._perform_request(
+                method=self._session.delete,
+                url=urljoin(self._base_api_url, uri),
+                verify=self._verify,
+                headers=h,
+                json=parameters
+            )
+        else:
+            return self._perform_request(
+                method=self._session.delete,
+                url=urljoin(self._base_api_url, uri),
+                verify=self._verify,
+                headers=h
+            )
+
     def _paginated_get_request(self, url, element_id='', filters='', sort=''):
         """ Some API GET calls support pagination: they return the values requested in pages and we need to request all
             the pages to get all the elements.
@@ -227,16 +252,8 @@ class NbuApiConnector:
         return self._paginated_get_request(url='admin/jobs/', element_id=jobId, filters=filters, sort=sort)
 
     def delete_job(self, jobId, reason=''):
-        return self._perform_request(
-            method=self._session.delete,
-            url=urljoin(self._base_api_url, 'admin/jobs/{}'.format(jobId)),
-            verify=self._verify,
-            headers={
-                'content-type': 'application/vnd.netbackup+json;version={}'.format(self._version),
-                'X-NetBackup-Audit-Reason': reason,
-                'Authorization': '{}'.format(self._token)
-            },
-        )
+        headers = {'X-NetBackup-Audit-Reason': reason}
+        return self._delete_api_call('admin/jobs/{}'.format(jobId), headers=headers)
 
     # NETBACKUP CONFIGURATION API
 
@@ -256,15 +273,7 @@ class NbuApiConnector:
         )
 
     def delete_policy(self, policyName, reason=''):
-        return self._perform_request(
-            method=self._session.delete,
-            url=urljoin(self._base_api_url, 'config/policies/{}'.format(policyName)),
-            verify=self._verify,
-            headers={
-                'content-type': 'application/vnd.netbackup+json;version={}'.format(self._version),
-                'Authorization': '{}'.format(self._token)
-            },
-        )
+        return self._delete_api_call('config/policies/{}'.format(policyName))
 
     # NETBACKUP STORAGE API
 
@@ -276,15 +285,7 @@ class NbuApiConnector:
         )
 
     def delete_storage_server(self, storageServer):
-        return self._perform_request(
-            method=self._session.delete,
-            url=urljoin(self._base_api_url, 'storage/storage-servers/{}'.format(storageServer)),
-            verify=self._verify,
-            headers={
-                'content-type': 'application/vnd.netbackup+json;version={}'.format(self._version),
-                'Authorization': '{}'.format(self._token)
-            },
-        )
+        return self._delete_api_call('storage/storage-servers/{}'.format(storageServer))
 
     def get_disk_volumes(self, storageServerId):
         """
@@ -306,15 +307,7 @@ class NbuApiConnector:
         return self._paginated_get_request(url='storage/disk-pools', element_id=diskPoolId)
 
     def delete_disk_pool(self, diskPoolId):
-        return self._perform_request(
-            method=self._session.delete,
-            url=urljoin(self._base_api_url, 'storage/disk-pools/{}'.format(diskPoolId)),
-            verify=self._verify,
-            headers={
-                'content-type': 'application/vnd.netbackup+json;version={}'.format(self._version),
-                'Authorization': '{}'.format(self._token)
-            },
-        )
+        return self._delete_api_call('storage/disk-pools/{}'.format(diskPoolId))
 
     def create_storage_unit(self, storageUnit):
         return self._post_api_call(
@@ -330,12 +323,5 @@ class NbuApiConnector:
         return self._paginated_get_request(url='storage/storage-units', element_id=storageUnitName)
 
     def delete_storage_unit(self, storageUnitName):
-        return self._perform_request(
-            method=self._session.delete,
-            url=urljoin(self._base_api_url, 'storage/storage-units/{}'.format(storageUnitName)),
-            verify=self._verify,
-            headers={
-                'content-type': 'application/vnd.netbackup+json;version={}'.format(self._version),
-                'Authorization': '{}'.format(self._token)
-            },
-        )
+        return self._delete_api_call('storage/storage-units/{}'.format(storageUnitName))
+
