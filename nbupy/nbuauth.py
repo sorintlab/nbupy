@@ -43,7 +43,12 @@ class NbuAuthorizationApi:
     def _perform_request(self, method, url, *args, **kwargs):
         logging.debug('call to [{}]'.format(url))
         response = method(url=url, *args, **kwargs)
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except Exception as e:
+            error_info = '' if not response.text else (response.text if response.text[-1] != '\n' else response.text[:-1])
+            logging.debug('error info: "{}"'.format(error_info))
+            raise e
         return response
 
     def _get_api_call(self, uri, headers=None, parameters=None):
@@ -151,7 +156,7 @@ class NbuAuthorizationApi:
         def get_call(url, element_id='', query=None, headers=None, parameters=None):
             url = '{}/{}'.format(url, element_id) if element_id else url
             if query:
-                url = url[:-1] if url[len(url) - 1] == '/' else url
+                url = url[:-1] if url[-1] == '/' else url
                 url += '?'
                 url += requests.utils.quote('&'.join(['{}={}'.format(q, v) for q, v in query.items()]), safe='=&')
             return self._get_api_call(url, headers, parameters)
