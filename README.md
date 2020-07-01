@@ -4,7 +4,7 @@ Python Package to use the API of Veritas Netbackup.
 
 ## Supported versions
 
-+ v1.0, v1.1
++ v2.0
     - api version 3.0
         + NBU version 8.2
 
