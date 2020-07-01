@@ -132,7 +132,7 @@ class NbuAuthorizationApi:
                 headers=h
             )
 
-    def _paginated_get_request(self, url, element_id='', filters='', sort=''):
+    def _paginated_get_request(self, url, element_id='', filters='', sort='', headers=None, parameters=None):
         """ Some API GET calls support pagination: they return the requested values in pages and we need to request all
             the pages to get all the values.
             Here I try to handle this for all the methods that are using this type of call.
@@ -146,21 +146,20 @@ class NbuAuthorizationApi:
             So far it's possible to use it only for API calls that are structured as ../resource/type/resource_id where
             the resource_id is what here is called element_id
         """
-        def get_call(url, element_id='', query=None):
-            # NOTE so far parameters and custom headers aren't supported
+        def get_call(url, element_id='', query=None, headers=None, parameters=None):
             url = '{}/{}'.format(url, element_id) if element_id else url
             if query:
                 url = url[:-1] if url[len(url) - 1] == '/' else url
                 url += '?'
                 url += requests.utils.quote('&'.join(['{}={}'.format(q, v) for q, v in query.items()]), safe='=&')
-            return self._get_api_call(url)
+            return self._get_api_call(url, headers, parameters)
 
-        def generate_elements(query, url):
+        def generate_elements(query, url, headers=None, parameters=None):
             page_offset = ''
             more = True
             while more:
                 if page_offset: query['page[offset]'] = page_offset
-                resp = get_call(url=url, query=query)
+                resp = get_call(url=url, query=query, headers=headers, parameters=parameters)
                 if 'links' in resp:
                     if 'next' in resp['links']:
                         page_offset = resp['meta']['pagination']['next']
@@ -169,13 +168,13 @@ class NbuAuthorizationApi:
                 yield resp['data'] if 'data' in resp else []
 
         if element_id:
-            return get_call(url, element_id)
+            return get_call(url=url, element_id=element_id, headers=headers, parameters=parameters)
         else:
             query = {'page[limit]': DEFAULT_PAGE_LIMIT}
             if filters: query['filter'] = filters
             if sort: query['sort'] = sort
             elements = {'data': []}
-            for job_list in generate_elements(query, url):
+            for job_list in generate_elements(query, url, headers, parameters):
                 elements['data'] = elements['data'] + job_list
             return elements
 
