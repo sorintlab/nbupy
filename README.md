@@ -1,6 +1,6 @@
 ## nbupy - Veritas Netbackup API Python module
 
-Module to use the API of Veritas Netbackup.
+Python Package to use the API of Veritas Netbackup.
 
 ## Supported versions
 
@@ -14,9 +14,24 @@ To get started with the API follow the Veritas [guide](https://sort.veritas.com/
 
 For the detailed documentation of the API connect to your master node at `https://<master node>/api-docs/index.html`.
 
+## Install
+
+    python setup.py install
+
 ## Class
 
-The class `NbuApiConnector` does have a very simple constructor
+There are many classes, hierarchically organized.
+
+At the top is `NbuAuthorizationApi` that implements the methods to communicate to the API plus the authorizaiton API calls.
+Between these are the `login` and `logout` calls.
+
+This Class is inherited by all the other classes, so they implement the same `__init__` and have the `login` and `logout`, plus their specific methods, example:
+
+    class NbuConfigurationApi(NbuAuthorizationApi)
+
+The class `NbuApiConnector` inherits the methods of all the classes, except for `NbuAuthorizationApi` which is already inherited by the other methods.
+
+### Constructor
 
     def __init__(self, url, user, password, verify, domain_name='', domain_type='', version=''):
         self._base_api_url = url
@@ -35,37 +50,36 @@ The `_token` and `_session` attributes will be filled by the `login()` method, a
 
 You also have a `set_api_key` method to set the token (that will be used in all the following requests) without calling the login.
 
-To use it:
+### Usage
 
-    >>> import nbuapi
-    >>> nbu = nbuapi.NbuApiConnector('https://127.0.0.1:1556/netbackup/', 'admin', 'password', False)
-    >>> sep.login()
-    >>> sep.get_all_jobs()
-    {'data': [{'links': {'self': {'href': '/admin/jobs/371'}, 'file-lists': {'href': ....
+To use it import the class that implements the methods you need:
 
-Or with the `__enter__` and `__exit__` methods:
+    >>> from nbupy import NbuAdministratorApi
+    >>> nbu = NbuAdministratorApi('https://127.0.0.1:1556/netbackup/', 'admin', 'password', False)
+    >>> nbu.login()
+    >>> nbu.get_all_jobs()
 
-    >>> import nbuapi
-    >>> with nbuapi.NbuApiConnector('https://127.0.0.1:1556/netbackup/', 'admin', 'password', False) as nbu:
-    ...     print(sep.get_all_jobs())
-    ...
-    {'data': [{'links': {'self': {'href': '/admin/jobs/371'}, 'file-lists': {'href': ....
+Or by using NbuApiConnector that implements all the methods:
+
+    >>> from nbupy import NbuApiConnector
+    >>> nbu = nbupy.NbuApiConnector('https://127.0.0.1:1556/netbackup/', 'admin', 'password', False)
+    >>> nbu.login()
+    >>> nbu.get_all_jobs()
+    >>> nbu.get_disk_pools()
+
+Using the `with` keyword:
+
+    >>> from nbupy import NbuApiConnector
+    >>> with NbuApiConnector('https://127.0.0.1:1556/netbackup/', 'admin', 'password', False) as nbu:
+    ...     print(nbu.get_all_jobs())
 
 #### Version
 
 The api version value is needed to create the `Accept` header value which looks like this: `application/vnd.netbackup+json;version=<major>.<minor>`
 
-With `DEFAULT_API_VERSION = '3.0'` and `SUPPORTED_API_VERSIONS = ['3.0']`.
+The variables `DEFAULT_API_VERSION = '3.0'` and `SUPPORTED_API_VERSIONS = ['3.0']` define the default value used in the api (if not defined in the __init__), and all the supported versions.
 
-I plan to add here the new supported versions of the API.
-
-#### No login methods
-
-These methods doesn't require any authentication
-
- - get_app_details()
- - get_ping()
- - get_tokenkey()
+I plan to add to `SUPPORTED_API_VERSIONS` the new supported versions of the API.
 
 #### NOTE
 
