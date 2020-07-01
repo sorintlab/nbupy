@@ -5,6 +5,7 @@ by Sorint https://sorint.it
 
 License GPLv3
 """
+import logging
 
 import requests
 from requests.compat import urljoin
@@ -40,6 +41,7 @@ class NbuAuthorizationApi:
         pass
 
     def _perform_request(self, method, url, *args, **kwargs):
+        logging.debug('call to [{}]'.format(url))
         response = method(url=url, *args, **kwargs)
         response.raise_for_status()
         return response
