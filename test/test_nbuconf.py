@@ -21,7 +21,7 @@ DOMAIN_TYPE = DOMAIN_TYPE if DOMAIN_TYPE else test_configuration.DOMAIN_TYPE
 VERSION = VERSION if VERSION else test_configuration.VERSION
 
 
-class TestNbuAuthorizationApi(unittest.TestCase):
+class TestNbuConfigurationApi(unittest.TestCase):
 
     def setUp(self):
         self.nbu = NbuConfigurationApi(url=URL, user=USER, password=PASSWORD, verify=VERIFY, domain_name=DOMAIN_NAME,
