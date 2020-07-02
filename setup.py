@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="nbupy",
-    version="1.1",
+    version="2.0",
     author="Miso Mijatovic",
     author_email="mmijatovic@sorint.it",
     description="Module to use the API of Veritas Netbackup ",
