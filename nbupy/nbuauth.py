@@ -15,7 +15,7 @@ DEFAULT_API_VERSION = '3.0'
 SUPPORTED_API_VERSIONS = ['3.0']
 
 
-class NbuAuthorizationApi:
+class NbuAuthorizationApi(object):
     """
         Here are implemented the methods to communicate with the api and the authorization methods.
         This class is inherited by other classes in this package

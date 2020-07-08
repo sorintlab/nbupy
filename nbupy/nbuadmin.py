@@ -6,14 +6,14 @@ by Sorint https://sorint.it
 License GPLv3
 """
 
-from . import nbuauth
+from .nbuauth import NbuAuthorizationApi
 
 
-class NbuAdministratorApi(nbuauth.NbuAuthorizationApi):
+class NbuAdministratorApi(NbuAuthorizationApi):
     """ Here are implemented the methods for the administrator API of netbackup """
 
     def __init__(self, url, user, password, verify, domain_name='', domain_type='', version=''):
-        super().__init__(url, user, password, verify, domain_name, domain_type, version)
+        super(NbuAdministratorApi, self).__init__(url, user, password, verify, domain_name, domain_type, version)
 
     # NETBACKUP ADMINISTRATOR API
 
