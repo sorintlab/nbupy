@@ -12,7 +12,7 @@ from . import nbuauth
 class NbuAdministratorApi(nbuauth.NbuAuthorizationApi):
     """ Here are implemented the methods for the administrator API of netbackup """
 
-    def __init__(self, url, user, password, verify, domain_name='', domain_type='', version=''):
+    def __init__(self, url, user, password, verify, domain_name='', domain_type='', version='', timeout=0):
         super().__init__(url, user, password, verify, domain_name, domain_type, version)
 
     # NETBACKUP ADMINISTRATOR API

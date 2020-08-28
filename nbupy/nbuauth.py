@@ -13,6 +13,7 @@ from requests.compat import urljoin
 DEFAULT_PAGE_LIMIT = '20'
 DEFAULT_API_VERSION = '3.0'
 SUPPORTED_API_VERSIONS = ['3.0']
+DEFAULT_TIMEOUT = 20
 
 
 class NbuAuthorizationApi:
@@ -21,7 +22,7 @@ class NbuAuthorizationApi:
         This class is inherited by other classes in this package
     """
 
-    def __init__(self, url, user, password, verify, domain_name='', domain_type='', version=''):
+    def __init__(self, url, user, password, verify, domain_name='', domain_type='', version='', timeout=DEFAULT_TIMEOUT):
         self._base_api_url = url
         self._user = user
         self._password = password
@@ -31,6 +32,7 @@ class NbuAuthorizationApi:
         self._version = version if version and version in SUPPORTED_API_VERSIONS else DEFAULT_API_VERSION
         self._token = None
         self._session = requests.Session()
+        self.timeout = timeout
 
     def __enter__(self):
         self.login()
@@ -42,7 +44,7 @@ class NbuAuthorizationApi:
 
     def _perform_request(self, method, url, *args, **kwargs):
         logging.debug('call to [{}]'.format(url))
-        response = method(url=url, *args, **kwargs)
+        response = method(url=url, timeout=self.timeout, *args, **kwargs)
         try:
             response.raise_for_status()
         except Exception as e:
@@ -170,7 +172,7 @@ class NbuAuthorizationApi:
                 if 'links' in resp:
                     if 'next' in resp['links']:
                         page_offset = resp['meta']['pagination']['next']
-                    if resp['meta']['pagination']['page'] + 1 == resp['meta']['pagination']['pages']:
+                    if (resp['meta']['pagination']['page'] + 1 == resp['meta']['pagination']['pages']) or resp['meta']['pagination']['pages'] == 0:
                         more = False
                 yield resp['data'] if 'data' in resp else []
 

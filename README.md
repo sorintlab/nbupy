@@ -4,7 +4,7 @@ Python Package to use the API of Veritas Netbackup.
 
 ## Supported versions
 
-+ v1.0, v1.1
++ v2.1.1
     - api version 3.0
         + NBU version 8.2
 
@@ -54,7 +54,7 @@ The `_token` and `_session` attributes will be filled by the `login()` method, a
 
 You also have a `set_api_key` method to set the token (that will be used in all the following requests) without calling the login.
 
-### Usage
+## Usage
 
 To use it import the class that implements the methods you need:
 
@@ -88,3 +88,13 @@ I plan to add to `SUPPORTED_API_VERSIONS` the new supported versions of the API.
 #### NOTE
 
 The type of the values passed to the functions are not checked.
+
+## Contribute
+
+1. New features and bug fix need to be developed in a new branch
+
+2. When the update is redy merge in branch `dev`
+
+3. Now prepare tests for the new feature
+
+4. When ready and tested merge in `master`
