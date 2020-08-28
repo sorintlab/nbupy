@@ -6,14 +6,14 @@ by Sorint https://sorint.it
 License GPLv3
 """
 
-from .nbuauth import NbuAuthorizationApi
+from . import nbuauth
 
 
-class NbuConfigurationApi(NbuAuthorizationApi):
+class NbuConfigurationApi(nbuauth.NbuAuthorizationApi):
     """ Here are implemented the methods for the configuration API of netbackup """
 
-    def __init__(self, url, user, password, verify, domain_name='', domain_type='', version=''):
-        super(NbuConfigurationApi, self).__init__(url, user, password, verify, domain_name, domain_type, version)
+    def __init__(self, url, user, password, verify, domain_name='', domain_type='', version='', timeout=0):
+        super().__init__(url, user, password, verify, domain_name, domain_type, version)
 
     # NETBACKUP CONFIGURATION API
 

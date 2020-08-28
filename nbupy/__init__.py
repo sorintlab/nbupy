@@ -5,7 +5,7 @@ from .nbuadmin import NbuAdministratorApi
 from .nbuconf import NbuConfigurationApi
 from .nbustorage import NbuStorageApi
 
-__version__ = '2.1'
+__version__ = '2.1.1'
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 

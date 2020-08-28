@@ -6,12 +6,11 @@ by Sorint https://sorint.it
 License GPLv3
 """
 
-from .nbuadmin import NbuAdministratorApi
-from .nbuconf import NbuConfigurationApi
-from .nbustorage import NbuStorageApi
+from . import nbuadmin, nbuconf, nbustorage
 
 
-class NbuApiConnector(NbuAdministratorApi, NbuConfigurationApi, NbuStorageApi):
+class NbuApiConnector(nbuadmin.NbuAdministratorApi, nbuconf.NbuConfigurationApi,
+                      nbustorage.NbuStorageApi):
     """ General connector that inherits all the methods from the other classes """
-    def __init__(self, url, user, password, verify, domain_name='', domain_type='', version=''):
-        super(NbuApiConnector, self).__init__(url, user, password, verify, domain_name, domain_type, version)
+    def __init__(self, url, user, password, verify, domain_name='', domain_type='', version='', timeout=0):
+        super().__init__(url, user, password, verify, domain_name, domain_type, version)
