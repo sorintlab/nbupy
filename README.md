@@ -8,10 +8,6 @@ Python Package to use the API of Veritas Netbackup.
     - api version 3.0
         + NBU version 8.2
 
-## WIKI
-
-https://wecode.sorint.it/SorintSpain/nbupy/wiki/Home
-
 ## API
 
 To get started with the API follow the Veritas [guide](https://sort.veritas.com/public/documents/nbu/8.2/windowsandunix/productguides/html/getting-started/).
@@ -91,13 +87,7 @@ The type of the values passed to the functions are not checked.
 
 ## Contribute
 
-1. New features and bug fix need to be developed in a new branch
-
-2. When the update is redy merge in branch `dev`
-
-3. Now prepare tests for the new feature
-
-4. When ready and tested merge in `master`
+To submit your changes please open a pull request.
 
 ## License
 
