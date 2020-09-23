@@ -98,3 +98,11 @@ The type of the values passed to the functions are not checked.
 3. Now prepare tests for the new feature
 
 4. When ready and tested merge in `master`
+
+## License
+
+GPL-3.0
+
+## Author Information
+
+Sorint.Lab Spain
