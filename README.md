@@ -1,6 +1,8 @@
 ## nbupy - Veritas Netbackup API Python module
 
-Python Package to use the API of Veritas Netbackup.
+At Sorint we make an extensive use of Netbackup with our customers and we had the necessity to automate many of the repetitive activities. We started to use the very complete Netbackup API with python and found it very effective. We were missing a standard python client library so we created this.
+
+We think this it is enough simple and easily extensible to automate all of your tasks without any problem.
 
 ## Supported versions
 
